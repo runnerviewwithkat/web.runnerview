@@ -1,0 +1,28 @@
+@use "../../styles/abstracts" as *;
+
+.title {
+  font-size: $fs-h1;
+  font-weight: $fw-bold;
+  color: $cl-secondary;
+  position: relative;
+  margin-top:   2rem;
+  margin-bottom:   1rem;
+  margin-left: 1rem;
+}
+
+.title::before {
+  content: "";
+  background: url("../../assets/dots-bg.svg");
+  width: 2.25rem;
+  height: 2.25rem;
+  position: absolute;
+  left: -0.875rem;
+  top: -0.4rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .title{
+    margin-top:   0.7rem;
+    margin-left:   5rem;
+  }
+}
