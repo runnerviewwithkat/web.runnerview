@@ -1,24 +1,16 @@
-import { Image } from "@mantine/core";
+import {Image, Skeleton} from "@mantine/core";
 import { motion } from "framer-motion";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 
 import { IEpisodesProps } from "./episodes.props";
 import { PageTitle } from "../../components";
-import { IEpisode_MOCK } from "../../data";
 
 import styles from "./episodes.module.scss";
+import {useEpisodes} from "./query";
 
 export const Episodes: FC<IEpisodesProps> = () => {
-  const [episodes, setEpisodes] = useState([]);
-
-  console.log('episodes', episodes);
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/product/product/')
-      .then((response) => response.json())
-      .then((data) => setEpisodes(data))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+  const { data: episodes, isLoading, error } = useEpisodes();
+  console.log('isLoading', isLoading)
   return (
     <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
     <div className={styles.product_header}>
@@ -27,13 +19,14 @@ export const Episodes: FC<IEpisodesProps> = () => {
       </div>
     </div>
     <div className={styles.product_grid}>
-      {IEpisode_MOCK.map((episodes) => (
+      {isLoading && <Skeleton className={styles.product_card}/>}
+      {episodes?.map((episodes: any) => (
         <div className={styles.product_card} key={episodes.id}>
           <div className={styles.product_thumbnail}>
             <Image src={episodes?.image} alt="" className={styles.product_img} />
             <div className={styles.product_mask}></div>
           </div>
-          <span className={styles.episode_name}>{episodes.number}</span>
+          <span className={styles.episode_name}>{episodes.title}</span>
           <div className={styles.buttonWrapper}>
             <a target="_blank" rel="noreferrer" href={episodes.linkYouTube} className={styles.productButtonYoutube}>
               <i className="icon-social-youtube"></i>
